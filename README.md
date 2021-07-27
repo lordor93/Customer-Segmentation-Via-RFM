@@ -14,3 +14,6 @@ In order to group existing customers according to their purchasing decisions, RF
 - Country: Country name. Nominal. The name of the country where a customer resides.
 # Data Set
 You can access data set from https://archive.ics.uci.edu/ml/datasets/Online+Retail+II.
+
+# RFM Segments
+![RFM_SEGMENTS](https://user-images.githubusercontent.com/13394756/127142995-974e095f-7194-457d-8995-91aa03560f2d.png)
