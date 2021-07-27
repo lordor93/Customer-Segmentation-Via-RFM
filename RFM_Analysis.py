@@ -9,6 +9,14 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.float_format', lambda x: '%.2f' % x)
 
 
+def retail_data_prep(dataframe):
+    dataframe.dropna(inplace=True)
+    # Omitting Repayments containing negative values in UnitPrice
+    dataframe = dataframe[~dataframe["Invoice"].str.contains("C", na=False)]
+    dataframe = dataframe[dataframe["Quantity"] > 0]
+    dataframe = dataframe[dataframe["Price"] > 0]
+    return dataframe
+
 #df_ = pd.read_excel("Week3/online_retail_II", sheet_name = "Year 2010-2011")
 #df_.to_pickle("online_retail_II_2010-2011.pkl")
 df =  pd.read_pickle("online_retail_II_2010-2011.pkl")
@@ -16,40 +24,16 @@ df.head()
 
 df.shape
 df.describe().T
-# Quantity negatifleri at
-
-df = df[ df["Quantity"] > 0]
-df = df[ df["Price"] > 0]
 
 
-##################
-# Missing Values
-##################
+# Data Preprocessing
 
-df.isnull().sum()
-
-df.dropna(inplace=True)
-df.shape
-
-df["StockCode"].nunique()
-
-
-df["StockCode"].value_counts().head(n=15)
-
-
+df = retail_data_prep(df)
 df.groupby("StockCode").agg({"Quantity":"sum"}).sort_values("Quantity",ascending= False).head()
-df["Invoice"].str.contains("C")
 
-
-# Omitting Repayments containing negative values in UnitPrice
-
-df = df[~df["Invoice"].str.contains("C", na=False)]
-df.shape
-
-
+# Total Price requires for Monetary value
 df["TotalPrice"] = df["Quantity"] * df["Price"]
 df.head()
-
 
 # Creation of RFM Metrics
 
